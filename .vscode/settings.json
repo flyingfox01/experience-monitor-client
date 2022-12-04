@@ -1,0 +1,5 @@
+{
+    "editor.formatOnSave": true,
+    "editor.suggest.shareSuggestSelections": false,
+    "eslint.format.enable": true
+}
