@@ -1,6 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './routes';
+import 'antd/dist/reset.css';
+import './index.less';
 
 // @ts-ignore
 const root = ReactDOM.createRoot(document.getElementById('root'));

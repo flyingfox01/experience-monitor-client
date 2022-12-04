@@ -37,7 +37,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.less$/, // css后缀文件
+        test: /\.less$/, // less/css后缀文件
         use: [
           devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
           'css-loader',
@@ -70,6 +70,13 @@ module.exports = {
             },
           },
         ], // 从右向左解析原则
+        exclude: /[\\/]node_modules[\\/]/,
+      },
+      { test: /\.css$/, loader: 'css-loader' },
+      {
+        test: /\.(svg)$/i, //svg文件
+        use: ['svg-loader'],
+        exclude: /[\\/]node_modules[\\/]/,
       },
       {
         test: /\.(jpe?g|png|gif)$/i, //图片文件
@@ -82,6 +89,7 @@ module.exports = {
         generator: {
           filename: 'img/[name].[contenthash:8].[ext]',
         },
+        exclude: /[\\/]node_modules[\\/]/,
       },
       {
         test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/, //媒体文件
@@ -89,6 +97,7 @@ module.exports = {
         generator: {
           filename: 'media/[name].[contenthash:8].[ext]',
         },
+        exclude: /[\\/]node_modules[\\/]/,
       },
       {
         test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i, // 字体
@@ -96,6 +105,7 @@ module.exports = {
         generator: {
           filename: 'fonts/[name].[contenthash:8].[ext]',
         },
+        exclude: /[\\/]node_modules[\\/]/,
       },
       {
         test: /\.(t|j)(s|sx)$/,

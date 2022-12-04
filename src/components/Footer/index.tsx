@@ -1,5 +1,5 @@
 import React from 'react';
-import { Layout } from '@douyinfe/semi-ui';
+import { Layout } from 'antd';
 import cs from 'classnames';
 import './index.less';
 

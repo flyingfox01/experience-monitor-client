@@ -1,32 +1,25 @@
-import {
-  Form,
-  Input,
-  Checkbox,
-  Link,
-  Button,
-  Space,
-} from '@arco-design/web-react';
-import { FormInstance } from '@arco-design/web-react/es/Form';
-import { IconLock, IconUser } from '@arco-design/web-react/icon';
-import React, { useEffect, useRef, useState } from 'react';
+import { Form, Checkbox, Input, Button } from 'antd';
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import React, { useState } from 'react';
 import axios from 'axios';
-import useStorage from '@/utils/useStorage';
-import useLocale from '@/utils/useLocale';
-import locale from './locale';
-import styles from './style/index.module.less';
+import useStorage from '@/utils/storage';
+import { useNavigate } from 'react-router-dom';
 
-export default function LoginForm() {
-  const formRef = useRef<FormInstance>();
+type LoginParams = {
+  name: string;
+  password: string;
+  agree: boolean;
+};
+
+const Component: React.FC = () => {
+  const navigate = useNavigate();
   const [errorMessage, setErrorMessage] = useState('');
   const [loading, setLoading] = useState(false);
-  const [loginParams, setLoginParams, removeLoginParams] =
-    useStorage('loginParams');
-
-  const t = useLocale(locale);
+  const [loginParams, setLoginParams, removeLoginParams] = useStorage('loginParams');
 
   const [rememberPassword, setRememberPassword] = useState(!!loginParams);
 
-  function afterLoginSuccess(params) {
+  function afterLoginSuccess(params: LoginParams) {
     // 记住密码
     if (rememberPassword) {
       setLoginParams(JSON.stringify(params));
@@ -36,20 +29,20 @@ export default function LoginForm() {
     // 记录登录状态
     localStorage.setItem('userStatus', 'login');
     // 跳转首页
-    window.location.href = '/';
+    navigate('/home');
   }
 
-  function login(params) {
+  function login(params: LoginParams) {
     setErrorMessage('');
     setLoading(true);
     axios
       .post('/api/user/login', params)
-      .then((res) => {
+      .then(res => {
         const { status, msg } = res.data;
         if (status === 'ok') {
           afterLoginSuccess(params);
         } else {
-          setErrorMessage(msg || t['login.form.login.errMsg']);
+          setErrorMessage(msg || '登录出错');
         }
       })
       .finally(() => {
@@ -57,74 +50,50 @@ export default function LoginForm() {
       });
   }
 
-  function onSubmitClick() {
-    formRef.current.validate().then((values) => {
-      login(values);
-    });
-  }
-
-  // 读取 localStorage，设置初始值
-  useEffect(() => {
-    const rememberPassword = !!loginParams;
-    setRememberPassword(rememberPassword);
-    if (formRef.current && rememberPassword) {
-      const parseParams = JSON.parse(loginParams);
-      formRef.current.setFieldsValue(parseParams);
-    }
-  }, [loginParams]);
+  const handleSubmit = (values: any) => {
+    console.log('Received values of form: ', values);
+    login(values);
+  };
 
   return (
-    <div className={styles['login-form-wrapper']}>
-      <div className={styles['login-form-title']}>{t['login.form.title']}</div>
-      <div className={styles['login-form-sub-title']}>
-        {t['login.form.title']}
-      </div>
-      <div className={styles['login-form-error-msg']}>{errorMessage}</div>
-      <Form
-        className={styles['login-form']}
-        layout="vertical"
-        ref={formRef}
-        initialValues={{ userName: 'admin', password: 'admin' }}
-      >
-        <Form.Item
-          field="userName"
-          rules={[{ required: true, message: t['login.form.userName.errMsg'] }]}
-        >
-          <Input
-            prefix={<IconUser />}
-            placeholder={t['login.form.userName.placeholder']}
-            onPressEnter={onSubmitClick}
-          />
+    <Form
+      name='normal_login'
+      className='login-form'
+      initialValues={{ remember: true }}
+      onFinish={handleSubmit}
+    >
+      <Form.Item name='username' rules={[{ required: true, message: '用户名未填写!' }]}>
+        <Input
+          prefix={<UserOutlined className='site-form-item-icon' />}
+          placeholder='请填写用户名'
+        />
+      </Form.Item>
+      <Form.Item name='password' rules={[{ required: true, message: '密码未填写!' }]}>
+        <Input
+          prefix={<LockOutlined className='site-form-item-icon' />}
+          type='password'
+          placeholder='请填写密码'
+        />
+      </Form.Item>
+      <Form.Item>
+        <Form.Item name='agree' valuePropName='checked' noStyle>
+          <Checkbox>我已经阅读服务条款</Checkbox>
         </Form.Item>
-        <Form.Item
-          field="password"
-          rules={[{ required: true, message: t['login.form.password.errMsg'] }]}
-        >
-          <Input.Password
-            prefix={<IconLock />}
-            placeholder={t['login.form.password.placeholder']}
-            onPressEnter={onSubmitClick}
-          />
-        </Form.Item>
-        <Space size={16} direction="vertical">
-          <div className={styles['login-form-password-actions']}>
-            <Checkbox checked={rememberPassword} onChange={setRememberPassword}>
-              {t['login.form.rememberPassword']}
-            </Checkbox>
-            <Link>{t['login.form.forgetPassword']}</Link>
-          </div>
-          <Button type="primary" long onClick={onSubmitClick} loading={loading}>
-            {t['login.form.login']}
-          </Button>
-          <Button
-            type="text"
-            long
-            className={styles['login-form-register-btn']}
-          >
-            {t['login.form.register']}
-          </Button>
-        </Space>
-      </Form>
-    </div>
+
+        <a className='login-form-forgot' href=''>
+          忘记密码
+        </a>
+      </Form.Item>
+
+      <Form.Item>
+        <Button type='primary' htmlType='submit' className='login-form-button' loading={loading}>
+          登录
+        </Button>
+        或 <a href=''>注册</a>
+      </Form.Item>
+      {errorMessage}
+    </Form>
   );
-}
+};
+
+export default Component;
