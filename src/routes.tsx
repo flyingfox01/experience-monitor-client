@@ -2,10 +2,10 @@ import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { createStore } from 'redux';
 import axios from 'axios';
-import Main from './pages/main';
-import Login from './pages/login';
-import { checkLogin } from './utils/permission';
-import rootReducer from './store/index';
+import Main from '@/pages/main';
+import Login from '@/pages/login';
+import { checkLogin } from '@/utils/permission';
+import rootReducer from '@/store/index';
 import React from 'react';
 
 const store = createStore(rootReducer);

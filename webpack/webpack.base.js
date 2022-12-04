@@ -9,7 +9,7 @@ module.exports = {
   mode: 'development',
   resolve: {
     alias: {
-      '@': path.join(__dirname, '../src'),
+      '@': path.resolve(__dirname, '../src'),
     },
     extensions: ['.js', '.tsx', '.ts'],
     modules: [path.resolve(__dirname, '../node_modules')], // 查找第三方模块只在本项目的node_modules中查找
