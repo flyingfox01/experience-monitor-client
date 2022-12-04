@@ -1,13 +1,18 @@
 import { useEffect } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { createStore } from 'redux';
 import axios from 'axios';
-import Main from './pages/main.tsx';
-import Login from './pages/login.tsx';
+import Main from './pages/main';
+import Login from './pages/login';
 import { checkLogin } from './utils/permission';
-import store from './store';
+import rootReducer from './store/index';
+import React from 'react';
+
+const store = createStore(rootReducer);
 
 function App() {
   function fetchUserInfo() {
+    debugger;
     store.dispatch({
       type: 'update-userInfo',
       payload: { userLoading: true },
