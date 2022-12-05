@@ -27,7 +27,7 @@ const initialState: GlobalState = {
   },
 };
 
-export default function store(state = initialState, action) {
+export default function store(state = initialState, action: any) {
   switch (action.type) {
     case 'update-userInfo': {
       // 更新用户信息和登录态
