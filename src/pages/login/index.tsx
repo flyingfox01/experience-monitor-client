@@ -1,26 +1,29 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Footer from '@/components/Footer';
-// @ts-ignore
-import Logo from '@/logo.svg';
 import LoginForm from './form';
 import LoginBanner from './banner';
+import { Layout } from 'antd';
 import './index.less';
+
+const { Content, Sider } = Layout;
 
 function Login() {
   return (
-    <div className='container'>
-      <div className='logo'>
-        {/* <Logo /> */}
+    <Layout className='container'>
+      <Sider width='550' className='slider'>
+        <div className='logo' />
         <div className='logo-text'>体验监控管理平台</div>
-      </div>
-      <div className='banner'>
-        <div className='banner-inner'>{<LoginBanner />}</div>
-      </div>
-      <div className='content'>
-        <div className='content-inner'>{<LoginForm />}</div>
-        <div className='footer'>{<Footer />}</div>
-      </div>
-    </div>
+        <LoginBanner />
+      </Sider>
+      <Content className='content'>
+        <Layout>
+          <Content className='inner-content'>
+            <LoginForm />
+          </Content>
+          <Footer />
+        </Layout>
+      </Content>
+    </Layout>
   );
 }
 

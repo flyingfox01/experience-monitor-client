@@ -62,6 +62,9 @@ const Component: React.FC = () => {
       initialValues={{ remember: true }}
       onFinish={handleSubmit}
     >
+      <div className='login-form-title'>登录体验监控管理平台</div>
+      <div className='login-form-sub-title'>登录体验监控管理平台</div>
+      <div className='margin12' />
       <Form.Item name='username' rules={[{ required: true, message: '用户名未填写!' }]}>
         <Input
           prefix={<UserOutlined className='site-form-item-icon' />}
@@ -84,12 +87,11 @@ const Component: React.FC = () => {
           忘记密码
         </a>
       </Form.Item>
-
       <Form.Item>
-        <Button type='primary' htmlType='submit' className='login-form-button' loading={loading}>
+        <Button type='primary' htmlType='submit' className='login-form-button'>
           登录
         </Button>
-        或 <a href=''>注册</a>
+        <a href=''>注册</a>
       </Form.Item>
       {errorMessage}
     </Form>
